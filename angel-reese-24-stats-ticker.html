@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angel Reese · 24 · By the Numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+:root{
+  --hot-pink:#FF1493;
+  --bright-pink:#FF6BB5;
+  --pop-pink:#FF3D9A;
+  --soft-pink:#FFE4F1;
+  --pink-cream:#FFF8FB;
+  --dream-red:#E03A3E;
+  --black:#1A0B14;
+  --gray:#6B5560;
+  --light-gray:#D9C5CF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--pink-cream);
+  color:var(--black);
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","cv11";
+  overflow-x:hidden;
+}
+.bg-pattern{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,107,181,0.10) 0%, transparent 38%),
+    radial-gradient(circle at 88% 82%, rgba(255,20,147,0.08) 0%, transparent 42%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 60%);
+}
+.confetti{position:fixed;inset:0;z-index:1;pointer-events:none;}
+.confetti span{position:absolute;border-radius:50%;opacity:0.55;animation:float 14s linear infinite;}
+@keyframes float{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(-110vh) rotate(360deg);}
+}
+.wrap{position:relative;z-index:2;max-width:920px;margin:0 auto;padding:22px 22px 36px;display:flex;flex-direction:column;}
+
+/* MASTHEAD - centered */
+.masthead{
+  text-align:center;padding-bottom:14px;border-bottom:1px solid var(--light-gray);
+  margin-bottom:18px;
+}
+.brand-mark{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--hot-pink) 0%,var(--bright-pink) 100%);
+  display:grid;place-items:center;color:#fff;font-weight:900;font-size:18px;letter-spacing:-0.02em;
+  box-shadow:0 4px 14px rgba(255,20,147,0.35);
+  margin:0 auto 10px;
+}
+.brand-name{font-size:13.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--black);}
+.brand-sub{font-size:11.5px;color:var(--gray);margin-top:3px;letter-spacing:0.04em;}
+.date-tag{font-size:10.5px;color:var(--gray);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-top:8px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:22px;}
+.kicker{
+  display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--hot-pink);background:rgba(255,20,147,0.08);padding:5px 13px;border-radius:30px;margin-bottom:14px;
+}
+.title{
+  font-size:clamp(36px,6.5vw,68px);font-weight:900;line-height:0.96;letter-spacing:-0.035em;
+  color:var(--black);margin-bottom:12px;
+}
+.title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--hot-pink) 0%,var(--pop-pink) 50%,var(--bright-pink) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.dek{
+  font-size:14.5px;line-height:1.6;color:var(--gray);max-width:540px;margin:0 auto;font-weight:400;
+}
+
+/* CARD STAGE */
+.stage{
+  position:relative;display:flex;flex-direction:column;justify-content:center;
+  margin:0 0 14px;
+}
+.card-shell{
+  position:relative;background:#fff;border-radius:18px;
+  box-shadow:0 18px 44px rgba(255,20,147,0.13),0 4px 16px rgba(26,11,20,0.05);
+  border:1px solid rgba(255,107,181,0.18);
+  overflow:hidden;cursor:pointer;
+  transition:transform 0.4s cubic-bezier(0.2,0.8,0.2,1);
+}
+.card-shell:hover{transform:translateY(-2px);}
+.card-shell::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:5px;
+  background:linear-gradient(90deg,var(--hot-pink),var(--bright-pink),var(--pop-pink));
+  z-index:2;
+}
+.card-inner{padding:38px 32px 36px;min-height:320px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;}
+.era-pill{
+  display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;padding:6px 13px;border-radius:30px;margin-bottom:24px;
+  border:1px solid currentColor;
+}
+.era-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+.big-stat{
+  font-size:clamp(64px,13vw,140px);font-weight:900;line-height:0.92;letter-spacing:-0.045em;
+  background:linear-gradient(135deg,var(--hot-pink) 0%,var(--pop-pink) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px;
+}
+.big-stat.dream{
+  background:linear-gradient(135deg,var(--dream-red) 0%,#C2272F 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat-label{font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--black);margin-bottom:12px;}
+.stat-desc{font-size:14.5px;line-height:1.55;color:var(--gray);max-width:480px;font-weight:400;}
+
+.card-counter{
+  position:absolute;top:18px;right:22px;font-size:10.5px;font-weight:600;color:var(--gray);
+  letter-spacing:0.08em;font-variant-numeric:tabular-nums;
+}
+.card-counter b{color:var(--hot-pink);font-weight:800;}
+
+/* CONTROLS */
+.controls{
+  display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px;
+}
+.btn{
+  background:#fff;border:1px solid var(--light-gray);width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;color:var(--black);
+  transition:all 0.2s ease;
+}
+.btn:hover{background:var(--hot-pink);border-color:var(--hot-pink);color:#fff;transform:scale(1.05);}
+.btn.play{background:var(--hot-pink);border-color:var(--hot-pink);color:#fff;width:50px;height:50px;}
+.btn.play:hover{background:var(--pop-pink);}
+.btn svg{width:16px;height:16px;}
+
+/* PROGRESS DOTS */
+.dots{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:18px;max-width:680px;margin-left:auto;margin-right:auto;
+}
+.dot{
+  width:9px;height:9px;border-radius:50%;background:var(--light-gray);cursor:pointer;
+  transition:all 0.3s ease;flex-shrink:0;
+}
+.dot:hover{transform:scale(1.3);}
+.dot.seen{background:var(--bright-pink);}
+.dot.active{background:var(--hot-pink);transform:scale(1.4);box-shadow:0 0 0 4px rgba(255,20,147,0.2);}
+
+/* PROGRESS BAR */
+.progress-track{
+  height:3px;background:var(--soft-pink);border-radius:2px;overflow:hidden;margin-top:14px;
+  max-width:240px;margin-left:auto;margin-right:auto;
+}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--hot-pink),var(--bright-pink));width:0%;transition:width 0.1s linear;}
+
+/* FINALE */
+.finale-banner{
+  display:none;position:absolute;inset:0;background:linear-gradient(135deg,var(--hot-pink) 0%,var(--pop-pink) 100%);
+  color:#fff;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:36px;
+  border-radius:18px;animation:fadein 0.6s ease;
+}
+.finale-banner.show{display:flex;}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+.finale-banner h2{font-size:clamp(32px,5.5vw,52px);font-weight:900;letter-spacing:-0.03em;margin-bottom:10px;line-height:1;}
+.finale-banner p{font-size:15px;opacity:0.92;max-width:400px;line-height:1.55;margin-bottom:20px;}
+.finale-banner .restart{
+  background:#fff;color:var(--hot-pink);font-weight:700;padding:11px 24px;border-radius:30px;
+  border:none;cursor:pointer;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;
+}
+.finale-banner .restart:hover{transform:scale(1.04);}
+
+/* FOOTER - centered */
+.foot{
+  margin-top:24px;padding-top:18px;border-top:1px solid var(--light-gray);
+  font-size:11px;color:var(--gray);line-height:1.8;text-align:center;
+}
+.foot strong{color:var(--black);font-weight:600;}
+.foot p{margin-bottom:2px;}
+.foot .cred{font-size:12px;color:var(--black);font-weight:600;margin-bottom:6px;letter-spacing:0.04em;}
+
+/* Era color tints */
+.era-origin{color:var(--hot-pink);}
+.era-high-school{color:#C2185B;}
+.era-maryland{color:#A6193C;}
+.era-lsu-arrival{color:#5C2D5F;}
+.era-lsu-junior{color:#7B1F4D;}
+.era-championship{color:#FFB300;}
+.era-lsu-senior{color:#7B1F4D;}
+.era-wnba-arrival{color:var(--pop-pink);}
+.era-wnba{color:var(--hot-pink);}
+.era-dream{color:var(--dream-red);}
+
+@media(max-width:600px){
+  .wrap{padding:18px 14px 30px;}
+  .card-inner{padding:32px 22px 30px;min-height:300px;}
+  .era-pill{margin-bottom:20px;}
+  .controls{gap:12px;}
+  .dots{gap:5px;}
+  .dot{width:8px;height:8px;}
+  .hero{margin-bottom:18px;}
+  .masthead{margin-bottom:14px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+<div class="confetti" id="confetti"></div>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand-mark">A</div>
+    <div class="brand-name">Angel Reese · By the Numbers</div>
+    <div class="brand-sub">Bmore Barbie · Bayou Barbie · Chi Barbie · Atlanta Dream</div>
+    <div class="date-tag">May 6, 2026 · 24 today</div>
+  </header>
+
+  <section class="hero">
+    <span class="kicker">A Birthday Data Story</span>
+    <h1 class="title">24 Stats for <em>24 Years</em></h1>
+    <p class="dek">From the Baltimore area to Baton Rouge to Chicago to her new chapter in Atlanta. Tap the card or use the controls to walk through Angel Reese's career, one number at a time.</p>
+  </section>
+
+  <section class="stage">
+    <div class="card-shell" id="card-shell">
+      <div class="card-inner" id="card-inner">
+        <div class="card-counter"><b id="counter-now">1</b> / 24</div>
+        <span class="era-pill" id="era-pill"><span class="era-dot"></span><span id="era-label">Origin</span></span>
+        <div class="big-stat" id="big-stat">24</div>
+        <div class="stat-label" id="stat-label">Years Today</div>
+        <div class="stat-desc" id="stat-desc">Born May 6, 2002 in Randallstown, Maryland.</div>
+      </div>
+      <div class="finale-banner" id="finale">
+        <h2>Happy 24, Bayou Barbie</h2>
+        <p>From a fractured foot in 2020 to a national championship in 2023 to two WNBA rebounding titles to a brand new chapter in Atlanta. The story is still writing itself.</p>
+        <button class="restart" id="restart">Walk Through Again</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="btn play" id="play" aria-label="Play or Pause">
+        <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+      </button>
+      <button class="btn" id="next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <footer class="foot">
+    <p class="cred">Words, concept and design by <strong>Kris E. Smith</strong> · @theblacktechie</p>
+    <p>Data sourced from <strong>ESPN</strong>, <strong>Sports-Reference</strong>, <strong>Basketball-Reference</strong>, <strong>Maryland Athletics</strong>, <strong>LSU Athletics</strong>, <strong>WNBA.com</strong> and <strong>CNN</strong>.</p>
+    <p>All college and WNBA statistics current through the 2025 WNBA season.</p>
+    <p>Tap the card or any dot to navigate.</p>
+    <p>Auto-advance pauses when you take control.</p>
+  </footer>
+</div>
+
+<script>
+// 24 verified stats, narratively ordered
+var STATS = [
+  {era:'Origin',         eraClass:'era-origin',       big:'24',          label:'Years Today',                desc:"Born May 6, 2002 in Randallstown, Maryland."},
+  {era:'Origin',         eraClass:'era-origin',       big:'6\u20323\u2033', label:'Height',                  desc:"Forward. Listed at 6 feet 3 inches."},
+  {era:'Origin',         eraClass:'era-origin',       big:'#5',          label:'Jersey Number',              desc:"Worn in Atlanta and previously in Chicago."},
+  {era:'High School',    eraClass:'era-high-school',  big:'2020',        label:'McDonald\u2019s All-American', desc:"Selected to the McDonald\u2019s All-American Game out of Saint Frances Academy in Baltimore."},
+  {era:'High School',    eraClass:'era-high-school',  big:'#2',          label:'Recruit Ranking',            desc:"ESPN\u2019s No. 2 overall player and No. 1 wing in the Class of 2020."},
+  {era:'High School',    eraClass:'era-high-school',  big:'1,720',       label:'High School Career Points',  desc:"Career total at Saint Frances Academy. Second in school history."},
+  {era:'High School',    eraClass:'era-high-school',  big:'1,250',       label:'High School Career Rebounds',desc:"Career total at Saint Frances Academy in Baltimore."},
+  {era:'Maryland',       eraClass:'era-maryland',     big:'15',          label:'Freshman Games',             desc:"Her 2020-21 season at Maryland was cut short by a fractured right foot."},
+  {era:'Maryland',       eraClass:'era-maryland',     big:'17.8',        label:'Sophomore PPG',              desc:"Breakout year at Maryland in 2021-22. AP Third Team All-American."},
+  {era:'Maryland',       eraClass:'era-maryland',     big:'10.6',        label:'Sophomore RPG',              desc:"First Maryland player to average a double-double since Angie Scott in 1975."},
+  {era:'LSU Arrival',    eraClass:'era-lsu-arrival',  big:'May 6',       label:'LSU Commit, 2022',           desc:"LSU announced her transfer on her 20th birthday."},
+  {era:'LSU Junior',     eraClass:'era-lsu-junior',   big:'23.0',        label:'Junior PPG at LSU',          desc:"2022-23. The first women\u2019s player in 15+ seasons to average 23 and 15.4."},
+  {era:'LSU Junior',     eraClass:'era-lsu-junior',   big:'15.4',        label:'Junior RPG at LSU',          desc:"Led the nation in rebounding. Set the SEC single-season rebounding record."},
+  {era:'LSU Junior',     eraClass:'era-lsu-junior',   big:'28',          label:'Single-Game Career-High Boards', desc:"26 points and 28 rebounds vs. Texas A&M, January 5, 2023. An LSU program record."},
+  {era:'LSU Junior',     eraClass:'era-lsu-junior',   big:'34',          label:'Career NCAA Tournament Double-Doubles', desc:"An NCAA record. A double-double in every LSU postseason game."},
+  {era:'Championship',   eraClass:'era-championship', big:'1',           label:'National Championship',      desc:"LSU defeated Iowa 102-85 on April 2, 2023. 15 points, 10 rebounds, 5 assists."},
+  {era:'Championship',   eraClass:'era-championship', big:'MOP',         label:'2023 NCAA Tournament',       desc:"Most Outstanding Player of the Final Four."},
+  {era:'LSU Senior',     eraClass:'era-lsu-senior',   big:'18.6 / 13.4', label:'Senior PPG / RPG at LSU',    desc:"Led the SEC in scoring and rebounding for a second straight year."},
+  {era:'LSU Senior',     eraClass:'era-lsu-senior',   big:'116',         label:'Career College Games',       desc:"Scored in double figures in all 67 of her games at LSU."},
+  {era:'WNBA Arrival',   eraClass:'era-wnba-arrival', big:'7',           label:'2024 WNBA Draft Pick',       desc:"Selected by the Chicago Sky with the seventh overall pick."},
+  {era:'WNBA',           eraClass:'era-wnba',         big:'446',         label:'Rookie Season Rebounds',     desc:"WNBA rookie single-season rebound record. Briefly held the all-time mark in 2024."},
+  {era:'WNBA',           eraClass:'era-wnba',         big:'13.1',        label:'Rookie RPG',                 desc:"WNBA all-time single-season rebounding average. No player had ever averaged 12+ before."},
+  {era:'WNBA',           eraClass:'era-wnba',         big:'2\u00d7',     label:'WNBA All-Star',              desc:"Selected in 2024 and 2025. Led the WNBA in rebounding both seasons."},
+  {era:'Atlanta Dream',  eraClass:'era-dream',        big:'Apr 6',       label:'2026: New Chapter',          desc:"Traded to the Atlanta Dream one month before her 24th birthday."}
+];
+
+var TOTAL = STATS.length;
+var idx = 0;
+var playing = true;
+var DURATION = 5000;
+var timer = null;
+var progressTimer = null;
+var progressStart = 0;
+
+var cardInner = document.getElementById('card-inner');
+var bigStat = document.getElementById('big-stat');
+var statLabel = document.getElementById('stat-label');
+var statDesc = document.getElementById('stat-desc');
+var eraPill = document.getElementById('era-pill');
+var eraLabel = document.getElementById('era-label');
+var counterNow = document.getElementById('counter-now');
+var dotsWrap = document.getElementById('dots');
+var progressFill = document.getElementById('progress-fill');
+var finale = document.getElementById('finale');
+var playIcon = document.getElementById('play-icon');
+
+// Build dots
+for (var i = 0; i < TOTAL; i++) {
+  var d = document.createElement('div');
+  d.className = 'dot';
+  d.dataset.i = i;
+  d.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var ni = parseInt(this.dataset.i, 10);
+    pause();
+    show(ni);
+  });
+  dotsWrap.appendChild(d);
+}
+
+function render() {
+  if (idx >= TOTAL) {
+    finale.classList.add('show');
+    pause();
+    updateDots();
+    return;
+  }
+  finale.classList.remove('show');
+  var s = STATS[idx];
+  cardInner.style.opacity = 0;
+  cardInner.style.transform = 'translateY(8px)';
+  setTimeout(function() {
+    bigStat.textContent = s.big;
+    bigStat.classList.toggle('dream', s.eraClass === 'era-dream');
+    statLabel.textContent = s.label;
+    statDesc.textContent = s.desc;
+    eraLabel.textContent = s.era;
+    eraPill.className = 'era-pill ' + s.eraClass;
+    counterNow.textContent = (idx + 1);
+    cardInner.style.opacity = 1;
+    cardInner.style.transform = 'translateY(0)';
+  }, 180);
+  cardInner.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+  updateDots();
+}
+
+function updateDots() {
+  var dotEls = dotsWrap.querySelectorAll('.dot');
+  for (var i = 0; i < dotEls.length; i++) {
+    dotEls[i].classList.remove('active', 'seen');
+    if (i < idx) dotEls[i].classList.add('seen');
+    if (i === idx) dotEls[i].classList.add('active');
+  }
+}
+
+function show(n) {
+  idx = Math.max(0, Math.min(n, TOTAL));
+  render();
+  if (playing && idx < TOTAL) startTimer();
+}
+
+function next() {
+  if (idx < TOTAL) {
+    idx++;
+    render();
+    if (playing && idx < TOTAL) startTimer();
+  }
+}
+function prev() {
+  if (idx > 0) {
+    idx--;
+    render();
+    if (playing && idx < TOTAL) startTimer();
+  }
+}
+
+function startTimer() {
+  clearTimers();
+  progressStart = Date.now();
+  progressFill.style.width = '0%';
+  progressTimer = setInterval(function() {
+    var elapsed = Date.now() - progressStart;
+    var pct = Math.min((elapsed / DURATION) * 100, 100);
+    progressFill.style.width = pct + '%';
+  }, 50);
+  timer = setTimeout(function() {
+    next();
+  }, DURATION);
+}
+function clearTimers() {
+  if (timer) { clearTimeout(timer); timer = null; }
+  if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+}
+function pause() {
+  playing = false;
+  clearTimers();
+  progressFill.style.width = '0%';
+  playIcon.innerHTML = '<polygon points="6 4 20 12 6 20" fill="currentColor"/>';
+}
+function play() {
+  playing = true;
+  playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+  startTimer();
+}
+
+document.getElementById('prev').addEventListener('click', function(e){ e.stopPropagation(); pause(); prev(); });
+document.getElementById('next').addEventListener('click', function(e){ e.stopPropagation(); pause(); next(); });
+document.getElementById('play').addEventListener('click', function(e){
+  e.stopPropagation();
+  if (playing) pause(); else play();
+});
+document.getElementById('card-shell').addEventListener('click', function(){
+  pause();
+  next();
+});
+document.getElementById('restart').addEventListener('click', function(e){
+  e.stopPropagation();
+  idx = 0;
+  finale.classList.remove('show');
+  render();
+  play();
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight'){ pause(); next(); }
+  if (e.key === 'ArrowLeft'){ pause(); prev(); }
+  if (e.key === ' '){ e.preventDefault(); if(playing) pause(); else play(); }
+});
+
+// Confetti background
+(function buildConfetti(){
+  var el = document.getElementById('confetti');
+  var colors = ['#FF1493','#FF6BB5','#FFB6D9','#FF3D9A','#FFD1E8'];
+  for (var i = 0; i < 40; i++) {
+    var s = document.createElement('span');
+    var size = 4 + Math.random() * 8;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = (100 + Math.random() * 50) + '%';
+    s.style.background = colors[Math.floor(Math.random() * colors.length)];
+    s.style.animationDelay = (Math.random() * -14) + 's';
+    s.style.animationDuration = (10 + Math.random() * 10) + 's';
+    el.appendChild(s);
+  }
+})();
+
+// Init
+render();
+startTimer();
+</script>
+</body>
+</html>
