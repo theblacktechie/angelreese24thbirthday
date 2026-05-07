@@ -105,4 +105,6 @@ Statistics current through the 2025 WNBA season.
 Words, concept, design and code by **Kris E. Smith**
 @theblacktechie · Atlanta, Georgia · May 6, 2026
 
-Built for fans, for the culture, and for Bayou Barbie.
+Built for fans, for the culture, and for ATL Barbie.
+
+Bmore raised her. Baton Rouge crowned her. Chicago sharpened her. Atlanta is next.
