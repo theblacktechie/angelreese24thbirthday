@@ -165,8 +165,8 @@ body{
 }
 .finale-banner.show{display:flex;}
 @keyframes fadein{from{opacity:0;}to{opacity:1;}}
-.finale-banner h2{font-size:clamp(32px,5.5vw,52px);font-weight:900;letter-spacing:-0.03em;margin-bottom:10px;line-height:1;}
-.finale-banner p{font-size:15px;opacity:0.92;max-width:400px;line-height:1.55;margin-bottom:20px;}
+.finale-banner h2{font-size:clamp(28px,5.5vw,52px);font-weight:900;letter-spacing:-0.03em;margin-bottom:10px;line-height:1;text-wrap:balance;}
+.finale-banner p{font-size:15px;opacity:0.92;max-width:440px;line-height:1.55;margin-bottom:20px;text-wrap:pretty;}
 .finale-banner .restart{
   background:#fff;color:var(--hot-pink);font-weight:700;padding:11px 24px;border-radius:30px;
   border:none;cursor:pointer;font-size:12.5px;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;
@@ -203,6 +203,7 @@ body{
   .dot{width:8px;height:8px;}
   .hero{margin-bottom:18px;}
   .masthead{margin-bottom:14px;}
+  .finale-banner{padding:28px 20px;}
 }
 </style>
 </head>
@@ -214,7 +215,7 @@ body{
   <header class="masthead">
     <div class="brand-mark">A</div>
     <div class="brand-name">Angel Reese · By the Numbers</div>
-    <div class="brand-sub">Bmore Barbie · Bayou Barbie · Chi Barbie · Atlanta Dream</div>
+    <div class="brand-sub">Bmore Barbie · Bayou Barbie · Chi Barbie · ATL Barbie</div>
     <div class="date-tag">May 6, 2026 · 24 today</div>
   </header>
 
@@ -234,7 +235,7 @@ body{
         <div class="stat-desc" id="stat-desc">Born May 6, 2002 in Randallstown, Maryland.</div>
       </div>
       <div class="finale-banner" id="finale">
-        <h2>Happy 24, Bayou Barbie</h2>
+        <h2>Happy 24, ATL Barbie</h2>
         <p>From a fractured foot in 2020 to a national championship in 2023 to two WNBA rebounding titles to a brand new chapter in Atlanta. The story is still writing itself.</p>
         <button class="restart" id="restart">Walk Through Again</button>
       </div>
